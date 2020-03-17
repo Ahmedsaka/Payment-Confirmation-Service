@@ -1,5 +1,6 @@
-package com.interswitchgroup.crudwithsp;
+package com.interswitchgroup.crudwithsp.Dao;
 
+import com.interswitchgroup.crudwithsp.Model.PaymentConfirmation;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;

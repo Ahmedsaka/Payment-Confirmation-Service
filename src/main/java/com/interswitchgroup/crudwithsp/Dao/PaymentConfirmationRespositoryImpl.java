@@ -1,16 +1,14 @@
-package com.interswitchgroup.crudwithsp;
+package com.interswitchgroup.crudwithsp.Dao;
 
+import com.interswitchgroup.crudwithsp.Model.PaymentConfirmation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.*;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.jdbc.core.simple.SimpleJdbcCall;
 import org.springframework.stereotype.Repository;
-import sun.security.krb5.internal.PAData;
 
 import javax.sql.DataSource;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.List;
 import java.util.Map;
 

@@ -1,4 +1,4 @@
-package com.interswitchgroup.crudwithsp;
+package com.interswitchgroup.crudwithsp.Model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.*;
