@@ -13,7 +13,9 @@ public class config {
     public DataSource sqlServerDataSource() {
         DriverManagerDataSource dataSource = new DriverManagerDataSource();
         dataSource.setDriverClassName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
-        dataSource.setUrl("localhost\\SQLEXPRESS;Database=test;Trusted_Connection=True");
+        dataSource.setUrl("jdbc:sqlserver://localhost\\ISW-ENGR-AS:1433;databaseName=test;integratedSecurity=false;");
+        dataSource.setUsername("AppUser");
+        dataSource.setPassword("Password12");
         return dataSource;
     }
 }

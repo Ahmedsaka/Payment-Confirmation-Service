@@ -1,101 +1,98 @@
 package com.interswitchgroup.crudwithsp;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.core.RowMapper;
+import org.springframework.jdbc.core.*;
+import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
+import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.jdbc.core.simple.SimpleJdbcCall;
 import org.springframework.stereotype.Repository;
+import sun.security.krb5.internal.PAData;
 
-import javax.annotation.PostConstruct;
 import javax.sql.DataSource;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
+import java.util.Map;
 
 @Repository
 public class PaymentConfirmationRespositoryImpl implements PaymentConfirmationRepository {
-
+//
     @Autowired
      private DataSource dataSource;
 
      private JdbcTemplate jdbcTemplate;
-     private SimpleJdbcCall simpleJdbcCall;
+     private SimpleJdbcCall findByTransactionId, findByAmount, findByCustomerId, findByProductId;
 
-     @PostConstruct
-     private void setDataSource(){
+//     @PostConstruct
+     @Autowired
+     private void setDataSource(DataSource dataSource){
         jdbcTemplate = new JdbcTemplate(dataSource);
-        simpleJdbcCall = new SimpleJdbcCall(dataSource)
-                .withProcedureName("retreive_payment_confirmation_by_id");
+        findByTransactionId = new SimpleJdbcCall(dataSource)
+                .withProcedureName("retrieve_payment_confirmation_by_transaction_id")
+                .returningResultSet("transaction", BeanPropertyRowMapper.newInstance(PaymentConfirmation.class))
+              ;
      }
 
     @Override
-    public List<PaymentConfirmation> getAllPayments() {
+    public List<Map<String, Object>> getAllPayments() {
          String sql = "SELECT * FROM payment_confirmation";
-        return jdbcTemplate.queryForList(sql, PaymentConfirmation.class);
+        return jdbcTemplate.queryForList(sql);
     }
 
     @Override
-    public PaymentConfirmation getPaymentById(long transaction_id) {
+    public PaymentConfirmation getPaymentById(long id) {
+        PaymentConfirmation payCon = new PaymentConfirmation();
+//                .useInParameterNames("transaction_id")
+//                .declareParameters(
+//                        new SqlParameter("@transaction_id", Types.NUMERIC)
+//                );
+             SqlParameterSource in = new MapSqlParameterSource()
+                 .addValue("transaction_id", id);
+//         Map<String, Object> out;
+         payCon = findByTransactionId.executeFunction(PaymentConfirmation.class, in);
+//         if (out == null){
+//             throw new TransactionNotFoundException("Transaction not found");
+//        }
+//
+//        PaymentConfirmation paymentConfirmation = new PaymentConfirmation();
+//        paymentConfirmation.setTransaction_id((long)out.get("transaction_id")); //
+//        paymentConfirmation.setCustomer_id((String)out.get("customer_id"));
+//        paymentConfirmation.setProduct_id((String)out.get("product_id"));
+//        paymentConfirmation.setTransaction_type((String)out.get("transaction_type"));
+//        paymentConfirmation.setAmount((double)out.get("amount"));//
+//
+//        return paymentConfirmation;
 
-//        String sql = "SELECT * FROM payment_confirmation WHERE transaction_id = ?";
-//        return jdbcTemplate.queryForObject(sql, new Object[]{transaction_id},
-//                (resultSet, i) -> {
-//                    PaymentConfirmation paymentConfirmation = new PaymentConfirmation();
-//                    paymentConfirmation.setTranaction_id(resultSet.getLong("transaction_id"));
-//                    paymentConfirmation.setCustomer_id(resultSet.getString("customer_id"));
-//                    paymentConfirmation.setProduct_id(resultSet.getString("product_id"));
-//                    paymentConfirmation.setTransaction_type(resultSet.getString("transaction_type"));
-//                    paymentConfirmation.setAmount(resultSet.getDouble("amount"));
-//                    return paymentConfirmation;
-//                }
-//        );
+       return payCon ;
     }
 
     @Override
-    public PaymentConfirmation getPaymentByCustomerId(String customer_id) {
-        String sql = "SELECT * FROM payment_confirmation WHERE customer_id = ?";
-        return jdbcTemplate.queryForObject(sql, new Object[]{customer_id},
-                (resultSet, i) -> {
-                    PaymentConfirmation paymentConfirmation = new PaymentConfirmation();
-                    paymentConfirmation.setTranaction_id(resultSet.getLong("transaction_id"));
-                    paymentConfirmation.setCustomer_id(resultSet.getString("customer_id"));
-                    paymentConfirmation.setProduct_id(resultSet.getString("product_id"));
-                    paymentConfirmation.setTransaction_type(resultSet.getString("transaction_type"));
-                    paymentConfirmation.setAmount(resultSet.getDouble("amount"));
-                    return paymentConfirmation;
-                }
-        );
+    public List<PaymentConfirmation> getPaymentConfirmationByTransactionId(long transaction_id){
+         return jdbcTemplate.query("SELECT * FROM payment_confirmation WHERE transaction_id = ?",new Object[]{transaction_id}, BeanPropertyRowMapper.newInstance(PaymentConfirmation.class));
+    }
+
+    @Override
+    public List<PaymentConfirmation> getPaymentByCustomerId(String customer_id) {
+        return getPayment("SELECT * FROM payment_confirmation WHERE customer_id = ?", customer_id);
     }
 
     @Override
     public List<PaymentConfirmation> getPaymentByProductId(String product_id) {
-        String sql = "SELECT * FROM payment_confirmation WHERE product_id = ?";
-        return jdbcTemplate.query(sql, new Object[]{product_id},
-                (resultSet, i) -> {
-                    PaymentConfirmation paymentConfirmation = new PaymentConfirmation();
-                    paymentConfirmation.setTranaction_id(resultSet.getLong("transaction_id"));
-                    paymentConfirmation.setCustomer_id(resultSet.getString("customer_id"));
-                    paymentConfirmation.setProduct_id(resultSet.getString("product_id"));
-                    paymentConfirmation.setTransaction_type(resultSet.getString("transaction_type"));
-                    paymentConfirmation.setAmount(resultSet.getDouble("amount"));
-                    return paymentConfirmation;
-                }
-        );
+        return getPayment("SELECT * FROM payment_confirmation WHERE product_id = ?", product_id);
     }
 
     @Override
     public List<PaymentConfirmation> getPaymentByAmount(double amount) {
-        String sql = "SELECT * FROM payment_confirmation WHERE amount = ?";
-        return jdbcTemplate.query(sql, new Object[]{amount},
-                (resultSet, i) -> {
-                    PaymentConfirmation paymentConfirmation = new PaymentConfirmation();
-                    paymentConfirmation.setTranaction_id(resultSet.getLong("transaction_id"));
-                    paymentConfirmation.setCustomer_id(resultSet.getString("customer_id"));
-                    paymentConfirmation.setProduct_id(resultSet.getString("product_id"));
-                    paymentConfirmation.setTransaction_type(resultSet.getString("transaction_type"));
-                    paymentConfirmation.setAmount(resultSet.getDouble("amount"));
-                    return paymentConfirmation;
-                }
-        );
-    }
+                return getPayment(amount, "SELECT * FROM payment_confirmation WHERE amount = ?");
+        }
+
+        private <T> List<PaymentConfirmation> getPayment(T params, String sql){
+            return jdbcTemplate.query(sql, new Object[]{params}, (resultSet, i) -> new PaymentConfirmation(
+                    resultSet.getLong("transaction_id"),
+                    resultSet.getString("customer_id"),
+                    resultSet.getString("product_id"),
+                    resultSet.getString("transaction_type"),
+                    resultSet.getDouble("amount")
+            ));
+        }
 }

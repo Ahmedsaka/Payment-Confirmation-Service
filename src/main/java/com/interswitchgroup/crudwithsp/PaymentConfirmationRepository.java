@@ -3,17 +3,19 @@ package com.interswitchgroup.crudwithsp;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Map;
 
 @Repository
 public interface PaymentConfirmationRepository {
 
-    List< PaymentConfirmation> getAllPayments();
+    List<Map<String, Object>> getAllPayments();
 
     PaymentConfirmation getPaymentById(long transaction_id);
 
-    PaymentConfirmation getPaymentByCustomerId(String customer_id);
+    List<PaymentConfirmation> getPaymentConfirmationByTransactionId(long transaction_id);
 
-//    public List<PaymentConfirmation>
+    List<PaymentConfirmation> getPaymentByCustomerId(String customer_id);
+
     List<PaymentConfirmation> getPaymentByProductId(String product_id);
 
     List<PaymentConfirmation> getPaymentByAmount(double amount);
