@@ -13,7 +13,7 @@ public interface PaymentConfirmationRepository {
 
     PaymentConfirmation getPaymentById(long transaction_id);
 
-    List<PaymentConfirmation> getPaymentConfirmationByTransactionId(long transaction_id);
+    PaymentConfirmation getPaymentConfirmationByTransactionId(long transaction_id);
 
     List<PaymentConfirmation> getPaymentByCustomerId(String customer_id);
 

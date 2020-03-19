@@ -9,6 +9,7 @@ import org.springframework.jdbc.core.simple.SimpleJdbcCall;
 import org.springframework.stereotype.Repository;
 
 import javax.sql.DataSource;
+import java.sql.Types;
 import java.util.List;
 import java.util.Map;
 
@@ -40,33 +41,28 @@ public class PaymentConfirmationRespositoryImpl implements PaymentConfirmationRe
     @Override
     public PaymentConfirmation getPaymentById(long id) {
         PaymentConfirmation payCon = new PaymentConfirmation();
-//                .useInParameterNames("transaction_id")
-//                .declareParameters(
-//                        new SqlParameter("@transaction_id", Types.NUMERIC)
-//                );
+                findByTransactionId.useInParameterNames("transaction_id")
+                .declareParameters(
+                        new SqlParameter("@transaction_id", Types.NUMERIC),
+                        new SqlParameter("@customer_id", Types.VARCHAR),
+                        new SqlParameter("@product_id", Types.VARCHAR),
+                        new SqlParameter("@transaction_type", Types.VARCHAR),
+                        new SqlParameter("@amount", Types.NUMERIC)
+                );
              SqlParameterSource in = new MapSqlParameterSource()
-                 .addValue("transaction_id", id);
-//         Map<String, Object> out;
-         payCon = findByTransactionId.executeFunction(PaymentConfirmation.class, in);
-//         if (out == null){
-//             throw new TransactionNotFoundException("Transaction not found");
-//        }
-//
-//        PaymentConfirmation paymentConfirmation = new PaymentConfirmation();
-//        paymentConfirmation.setTransaction_id((long)out.get("transaction_id")); //
-//        paymentConfirmation.setCustomer_id((String)out.get("customer_id"));
-//        paymentConfirmation.setProduct_id((String)out.get("product_id"));
-//        paymentConfirmation.setTransaction_type((String)out.get("transaction_type"));
-//        paymentConfirmation.setAmount((double)out.get("amount"));//
-//
-//        return paymentConfirmation;
-
+                 .addValue("@transaction_id", id);
+         Map<String, Object> out = findByTransactionId.execute(in);
+            payCon.setTransaction_id((Long) out.get("@transaction_id"));
+            payCon.setCustomer_id((String) out.get("@customer_id"));
+            payCon.setProduct_id((String) out.get("@product_id"));
+            payCon.setTransaction_type((String) out.get("@transaction_type"));
+            payCon.setAmount((Double) out.get("@amount"));
        return payCon ;
     }
 
     @Override
-    public List<PaymentConfirmation> getPaymentConfirmationByTransactionId(long transaction_id){
-         return jdbcTemplate.query("SELECT * FROM payment_confirmation WHERE transaction_id = ?",new Object[]{transaction_id}, BeanPropertyRowMapper.newInstance(PaymentConfirmation.class));
+    public PaymentConfirmation getPaymentConfirmationByTransactionId(long transaction_id){
+         return jdbcTemplate.queryForObject("SELECT * FROM payment_confirmation WHERE transaction_id = ?",new Object[]{transaction_id}, BeanPropertyRowMapper.newInstance(PaymentConfirmation.class));
     }
 
     @Override
@@ -81,10 +77,10 @@ public class PaymentConfirmationRespositoryImpl implements PaymentConfirmationRe
 
     @Override
     public List<PaymentConfirmation> getPaymentByAmount(double amount) {
-                return getPayment(amount, "SELECT * FROM payment_confirmation WHERE amount = ?");
+                return getPayment("SELECT * FROM payment_confirmation WHERE amount = ?", amount);
         }
 
-        private <T> List<PaymentConfirmation> getPayment(T params, String sql){
+        private <T> List<PaymentConfirmation> getPayment(String sql, T... params){
             return jdbcTemplate.query(sql, new Object[]{params}, (resultSet, i) -> new PaymentConfirmation(
                     resultSet.getLong("transaction_id"),
                     resultSet.getString("customer_id"),
