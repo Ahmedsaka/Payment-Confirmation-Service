@@ -1,7 +1,7 @@
 package com.interswitchgroup.crudwithsp.RestController;
 
-import com.interswitchgroup.crudwithsp.Dao.PaymentConfirmationRespositoryImpl;
 import com.interswitchgroup.crudwithsp.Model.PaymentConfirmation;
+import com.interswitchgroup.crudwithsp.Service.PaymentConfirmationServiceImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,43 +21,43 @@ import java.util.Optional;
 public class PaymentConfirmationController {
 
     private static Logger LOG = LoggerFactory.getLogger(PaymentConfirmationController.class);
-    private PaymentConfirmationRespositoryImpl paymentConfirmationRespository;
+    private PaymentConfirmationServiceImpl paymentConfirmationService;
 
     @Autowired
-    public PaymentConfirmationController(PaymentConfirmationRespositoryImpl paymentConfirmationRespository) {
-        this.paymentConfirmationRespository = paymentConfirmationRespository;
+    public PaymentConfirmationController(PaymentConfirmationServiceImpl paymentConfirmationService) {
+        this.paymentConfirmationService = paymentConfirmationService;
     }
 
     @RequestMapping(value = "/payment_confirmation/allpayments", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public Optional<List<Map<String, Object>>> getAllpaymentConfirmation(){
         HttpHeaders headers = new HttpHeaders();
         headers.add(HttpHeaders.ACCEPT, "All transactions");
-        paymentConfirmationRespository.getAllPayments()
+        paymentConfirmationService.getAllPayments()
                 .stream()
                 .forEach(p-> LOG.info(p.toString()));
-        return Optional.ofNullable(paymentConfirmationRespository.getAllPayments());
+        return Optional.ofNullable(paymentConfirmationService.getAllPayments());
     }
 
     @RequestMapping(value = "/payment_confirmation/payment/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public Optional<PaymentConfirmation> getTransactionId(@PathVariable long id) {
-        return Optional.ofNullable(paymentConfirmationRespository.getPaymentConfirmationByTransactionId(id));
+        return Optional.ofNullable(paymentConfirmationService.getPaymentConfirmationByTransactionId(id));
     }
 
 
     @RequestMapping(value = "/payment_confirmation/paymentByProductId" +
             "/{product_id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public Optional<List<PaymentConfirmation>> getTransactionsByProductId(@PathVariable String product_id) {
-        return Optional.ofNullable(paymentConfirmationRespository.getPaymentByProductId(product_id));
+        return Optional.ofNullable(paymentConfirmationService.getPaymentByProductId(product_id));
     }
 
     @RequestMapping(value = "/payment_confirmation/paymentByAmount" +
             "/{amount}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public Optional<List<PaymentConfirmation>> getTransactionsByAmount(@PathVariable double amount) {
-        return Optional.ofNullable(paymentConfirmationRespository.getPaymentByAmount(amount));
+        return Optional.ofNullable(paymentConfirmationService.getPaymentByAmount(amount));
     }
 
-    @RequestMapping(value = "/payment_confirmation/payment1/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Optional<PaymentConfirmation> getTransactionId1(@PathVariable long id) {
-        return Optional.ofNullable(paymentConfirmationRespository.getPaymentById(id));
-    }
+//    @RequestMapping(value = "/payment_confirmation/payment1/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+//    public Optional<Map<String, Object>> getTransactionId1(@PathVariable long id) {
+//        return Optional.ofNullable(paymentConfirmationService.getPaymentById(id));
+//    }
 }
