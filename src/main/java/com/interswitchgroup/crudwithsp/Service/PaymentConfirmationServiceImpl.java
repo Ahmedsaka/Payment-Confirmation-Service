@@ -25,7 +25,7 @@ public class PaymentConfirmationServiceImpl implements PaymentConfirmationServic
 
     @Override
     public List<PaymentConfirmation> getPaymentByProductId(String product_id) {
-        return getPaymentByProductId(product_id);
+        return confirmationRespository.getPaymentByProductId(product_id);
     }
 
     @Override
@@ -35,11 +35,11 @@ public class PaymentConfirmationServiceImpl implements PaymentConfirmationServic
 
     @Override
     public PaymentConfirmation getPaymentConfirmationByTransactionId(long transaction_id){
-        return getPaymentConfirmationByTransactionId(transaction_id);
+        return confirmationRespository.getPaymentConfirmationByTransactionId(transaction_id);
     }
 
     @Override
     public List<Map<String, Object>> getAllPayments() {
-        return null;
+        return confirmationRespository.getAllPayments();
     }
 }

@@ -80,7 +80,7 @@ public class PaymentConfirmationRespositoryImpl implements PaymentConfirmationRe
                 return getPayment("SELECT * FROM payment_confirmation WHERE amount = ?", amount);
         }
 
-        private <T> List<PaymentConfirmation> getPayment(String sql, T... params){
+        private <T> List<PaymentConfirmation> getPayment(String sql, T params){
             return jdbcTemplate.query(sql, new Object[]{params}, (resultSet, i) -> new PaymentConfirmation(
                     resultSet.getLong("transaction_id"),
                     resultSet.getString("customer_id"),
