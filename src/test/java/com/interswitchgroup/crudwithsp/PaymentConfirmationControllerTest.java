@@ -3,6 +3,7 @@ package com.interswitchgroup.crudwithsp;
 import com.interswitchgroup.crudwithsp.Dao.PaymentConfirmationRespositoryImpl;
 import com.interswitchgroup.crudwithsp.Model.PaymentConfirmation;
 import com.interswitchgroup.crudwithsp.RestController.PaymentConfirmationController;
+import com.interswitchgroup.crudwithsp.Service.PaymentConfirmationServiceImpl;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -14,7 +15,7 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
 @WebMvcTest
-@ContextConfiguration(classes = PaymentConfirmationController.class)
+@ContextConfiguration(classes = {PaymentConfirmationController.class, PaymentConfirmationServiceImpl.class})
 class PaymentConfirmationControllerTest {
 
     private long id = 1L;
@@ -28,13 +29,10 @@ class PaymentConfirmationControllerTest {
     private MockMvc mockMvc;
 
     @MockBean
-    PaymentConfirmationRespositoryImpl paymentConfirmationRespository;
+    PaymentConfirmationServiceImpl paymentConfirmationService;
 
     @Test
     void getAllpaymentConfirmationTest() throws Exception {
-//        Mockito.when(this.paymentConfirmationRespository.getAllPayments())
-//                .thenReturn(Collections.singletonList(paymentConfirmation));
-
         this.mockMvc.perform(MockMvcRequestBuilders.get("/payment_confirmation/allpayments"))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON));
@@ -52,4 +50,7 @@ class PaymentConfirmationControllerTest {
 //    }
 
 
+    @Test
+    void paymentConfirmationByName() {
+    }
 }
