@@ -1,21 +1,22 @@
 package com.interswitchgroup.crudwithsp.Dao;
 
+import com.interswitchgroup.crudwithsp.Model.PaymentConfirmation;
 import org.springframework.stereotype.Repository;
 
-import java.util.Map;
+import java.util.List;
 
 @Repository
 public interface PaymentConfirmationRepository {
 
-    Map<String, Object> getAllPayments();
+    List<PaymentConfirmation> getAllPayments();
 
-    Map<String, Object> getPaymentById(long transaction_id);
+    PaymentConfirmation getPaymentById(long transaction_id);
 
 //    PaymentConfirmation getPaymentConfirmationByTransactionId(long transaction_id);
 
-    Map<String, Object> getPaymentByCustomerId(String customer_id);
+    List<PaymentConfirmation> getPaymentByCustomerId(String customer_id);
 
-    Map<String, Object> getPaymentByProductId(String product_id);
+    List<PaymentConfirmation> getPaymentByProductId(String product_id);
 
-    Map<String, Object> getPaymentByAmount(double amount);
+    List<PaymentConfirmation> getPaymentByAmount(double amount);
 }

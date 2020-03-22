@@ -86,4 +86,15 @@ public class PaymentConfirmation {
     public int hashCode() {
         return Objects.hash(transaction_id, customer_id, product_id, transaction_type, amount);
     }
+
+    @Override
+    public String toString() {
+        return "PaymentConfirmation{" +
+                "transaction_id=" + transaction_id +
+                ", customer_id='" + customer_id + '\'' +
+                ", product_id='" + product_id + '\'' +
+                ", transaction_type='" + transaction_type + '\'' +
+                ", amount=" + amount +
+                '}';
+    }
 }

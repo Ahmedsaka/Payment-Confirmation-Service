@@ -1,10 +1,11 @@
 package com.interswitchgroup.crudwithsp.Service;
 
 import com.interswitchgroup.crudwithsp.Dao.PaymentConfirmationRespositoryImpl;
+import com.interswitchgroup.crudwithsp.Model.PaymentConfirmation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.Map;
+import java.util.List;
 
 @Service
 public class PaymentConfirmationServiceImpl implements PaymentConfirmationService {
@@ -17,17 +18,17 @@ public class PaymentConfirmationServiceImpl implements PaymentConfirmationServic
     }
 
     @Override
-    public Map<String, Object> getPaymentByAmount(double amount) {
+    public List<PaymentConfirmation> getPaymentByAmount(double amount) {
         return confirmationRespository.getPaymentByAmount(amount);
     }
 
     @Override
-    public Map<String, Object> getPaymentByProductId(String product_id) {
+    public List<PaymentConfirmation> getPaymentByProductId(String product_id) {
         return confirmationRespository.getPaymentByProductId(product_id);
     }
 
     @Override
-    public Map<String, Object> getPaymentByCustomerId(String customer_id) {
+    public List<PaymentConfirmation> getPaymentByCustomerId(String customer_id) {
         return confirmationRespository.getPaymentByCustomerId(customer_id);
     }
 
@@ -37,11 +38,11 @@ public class PaymentConfirmationServiceImpl implements PaymentConfirmationServic
 //    }
 
     @Override
-    public Map<String, Object> getAllPayments() {
+    public List<PaymentConfirmation> getAllPayments() {
         return confirmationRespository.getAllPayments();
     }
 
-    public Object getPaymentById(long id) {
+    public PaymentConfirmation getPaymentById(long id) {
         return confirmationRespository.getPaymentById(id);
     }
 }

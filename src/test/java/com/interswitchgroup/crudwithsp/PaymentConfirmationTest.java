@@ -26,7 +26,6 @@ class PaymentConfirmationTest {
         assertEquals(paymentConfirmation.getProduct_id(), "270001");
         assertEquals(paymentConfirmation.getTransaction_type(), "billpayment");
         assertEquals(paymentConfirmation.getAmount(), 2500.00);
-
     }
 
     @Test
