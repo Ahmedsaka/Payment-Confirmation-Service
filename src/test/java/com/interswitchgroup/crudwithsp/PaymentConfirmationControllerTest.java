@@ -70,10 +70,32 @@ class PaymentConfirmationControllerTest {
 
 
     @Test
-    void paymentConfirmationByProductId() {
-//        Mockito.when(paymentConfirmationService.getPaymentByProductId("270001"))
-//                .thenReturn(Collections.singletonList(paymentConfirmation));
-//        this.mockMvc.perform(MockMvcRequestBuilders.get())
+    void paymentConfirmationByProductId() throws Exception{
+        Mockito.when(paymentConfirmationService.getPaymentByProductId("270001"))
+                .thenReturn(Collections.singletonList(paymentConfirmation));
+        this.mockMvc.perform(MockMvcRequestBuilders.get("/payment_confirmation/paymentByProductId/270001", "270001"))
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.[0].transaction_id").value(1L))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.[0].customer_id").value("customertest@test.com"))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.[0].product_id").value("270001"))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.[0].transaction_type").value("billpayment"))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.[0].amount").value(2500.00));
 
+
+    }
+
+    @Test
+    void paymentConfirmationByAmount() throws Exception{
+        Mockito.when(paymentConfirmationService.getPaymentByAmount(2500.00))
+                .thenReturn(Collections.singletonList(paymentConfirmation));
+        this.mockMvc.perform(MockMvcRequestBuilders.get("/payment_confirmation/paymentByAmount/2500.00", 2500.00))
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.[0].transaction_id").value(1L))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.[0].customer_id").value("customertest@test.com"))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.[0].product_id").value("270001"))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.[0].transaction_type").value("billpayment"))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.[0].amount").value(2500.00));
     }
 }
