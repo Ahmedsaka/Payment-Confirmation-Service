@@ -23,19 +23,24 @@ public class PaymentConfirmationRespositoryImpl implements PaymentConfirmationRe
      private void setDataSource(DataSource dataSource){
         findByTransactionId = new SimpleJdbcCall(dataSource)
                 .withProcedureName("retrieve_payment_confirmation_by_transaction_id")
-                .returningResultSet("transaction", BeanPropertyRowMapper.newInstance(PaymentConfirmation.class));
+                .returningResultSet("transaction",
+                        BeanPropertyRowMapper.newInstance(PaymentConfirmation.class));
         findByCustomerId = new SimpleJdbcCall(dataSource)
                 .withProcedureName("retrieve_payment_confirmation_by_customer_id")
-                .returningResultSet("transactions", BeanPropertyRowMapper.newInstance(PaymentConfirmation.class));
+                .returningResultSet("transactions",
+                        BeanPropertyRowMapper.newInstance(PaymentConfirmation.class));
         findByProductId = new SimpleJdbcCall(dataSource)
                 .withProcedureName("retrieve_payment_confirmation_by_product_id")
-                .returningResultSet("transactions", BeanPropertyRowMapper.newInstance(PaymentConfirmation.class));
+                .returningResultSet("transactions",
+                        BeanPropertyRowMapper.newInstance(PaymentConfirmation.class));
         findByAmount = new SimpleJdbcCall(dataSource)
                  .withProcedureName("retrieve_payment_confirmation_by_amount_id")
-                 .returningResultSet("transactions", BeanPropertyRowMapper.newInstance(PaymentConfirmation.class));
+                 .returningResultSet("transactions",
+                         BeanPropertyRowMapper.newInstance(PaymentConfirmation.class));
         findAllPayments = new SimpleJdbcCall(dataSource)
                 .withProcedureName("retrieve_all_payments")
-                .returningResultSet("transactions", BeanPropertyRowMapper.newInstance(PaymentConfirmation.class));
+                .returningResultSet("transactions",
+                        BeanPropertyRowMapper.newInstance(PaymentConfirmation.class));
      }
 
     @Override
