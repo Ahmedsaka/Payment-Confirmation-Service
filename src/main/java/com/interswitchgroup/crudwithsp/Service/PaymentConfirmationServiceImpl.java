@@ -1,6 +1,6 @@
 package com.interswitchgroup.crudwithsp.Service;
 
-import com.interswitchgroup.crudwithsp.Dao.PaymentConfirmationRespositoryImpl;
+import com.interswitchgroup.crudwithsp.Dao.PaymentConfirmationRepositoryImpl;
 import com.interswitchgroup.crudwithsp.Model.PaymentConfirmation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -10,10 +10,13 @@ import java.util.List;
 @Service
 public class PaymentConfirmationServiceImpl implements PaymentConfirmationService {
 
-    private PaymentConfirmationRespositoryImpl confirmationRespository;
+    private PaymentConfirmationRepositoryImpl confirmationRespository;
+
+    public PaymentConfirmationServiceImpl() {
+    }
 
     @Autowired
-    public PaymentConfirmationServiceImpl(PaymentConfirmationRespositoryImpl confirmationRespository) {
+    public PaymentConfirmationServiceImpl(PaymentConfirmationRepositoryImpl confirmationRespository) {
         this.confirmationRespository = confirmationRespository;
     }
 

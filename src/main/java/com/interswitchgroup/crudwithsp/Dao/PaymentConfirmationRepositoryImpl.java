@@ -13,7 +13,7 @@ import java.util.List;
 import java.util.Map;
 
 @Repository
-public class PaymentConfirmationRespositoryImpl implements PaymentConfirmationRepository {
+public class PaymentConfirmationRepositoryImpl implements PaymentConfirmationRepository {
     @Autowired
      private DataSource dataSource;
 

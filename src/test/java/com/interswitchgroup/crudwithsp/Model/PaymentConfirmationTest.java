@@ -1,4 +1,4 @@
-package com.interswitchgroup.crudwithsp;
+package com.interswitchgroup.crudwithsp.Model;
 
 import com.interswitchgroup.crudwithsp.Model.PaymentConfirmation;
 import org.junit.jupiter.api.AfterEach;
